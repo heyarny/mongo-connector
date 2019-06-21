@@ -24,11 +24,10 @@ services:
 
   # elasticsearch
   es01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.16
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.0
     environment:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
-      - xpack.security.enabled=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:
@@ -59,12 +58,17 @@ services:
       MAIN: mongodb://mongo1:27017
       TARGET: es01:9200
       ARGS: -n foobar.teest
+      RUN_SCRIPT: /data/run_script.sh
 
 ```
 
 **MAIN** = source uri of your database.
 
 **TARGET** = target uri of your elasticsearch database.
+
+**ARGS** = additional arguments passed to mongo-connector.
+
+**RUN_SCRIPT** = optionally run scripts before running connector (eg. prepare index/mapping).
 
 ## License
 [WTFPL](https://en.wikipedia.org/wiki/WTFPL)
